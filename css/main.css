@@ -173,7 +173,40 @@ h5 {
 .button:active {
   scale: 1;
 }
+#backtop {
+    position: fixed;
+    right: 30px; 
+    bottom: -80px; 
+    z-index: 9999;
+    width: 50px;
+    height: 50px;
+    background-color: #00A0C1; 
+    color: white;
+    border-radius: 50%; 
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: bottom 0.3s ease-in-out, background-color 0.3s ease, transform 0.2s; 
+    text-decoration: none;
+    font-size: 0; 
+}
 
+#backtop::before {
+    content: "↑";
+    font-size: 26px;
+    line-height: 1;
+    font-weight: bold;
+    color: white;
+    transform: translateY(2px);
+    display: block; 
+}
+
+
+#backtop:hover {
+    background-color: #007bb5;
+    transform: translateY(-2px); 
+}
 /* === Header qismi ================================================= */
 header {
   position        : fixed;
