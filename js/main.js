@@ -1,32 +1,32 @@
+const hamburgerButton = document.getElementById("navbar-open");
+
 function openNavbar() {
     document.getElementById("navbar-responsive").style.left = "0";
+    hamburgerButton.style.display = "none";
 }
 
 function closeNavbar() {
-    
     document.getElementById("navbar-responsive").style.left = "-100%";
+    hamburgerButton.style.display = "block"; 
 }
  
-
 document.getElementById("navbar-open").addEventListener("click", openNavbar);
 document.getElementById("navbar-close").addEventListener("click", closeNavbar);
-
 
 const navLinks = document.querySelectorAll('#navbar-responsive a[href^="#"]');
 navLinks.forEach(link => {
     link.addEventListener('click', closeNavbar);
 });
 
-
 let navbar = document.getElementById("navbar");
 function shrink() {
-    
     if (window.scrollY > 80) { 
         navbar.classList.add("navbar-shrink");
     } else {
         navbar.classList.remove("navbar-shrink");
     }
 }
+window.addEventListener('scroll', shrink);
 
 
 
