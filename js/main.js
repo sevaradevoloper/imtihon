@@ -1,29 +1,27 @@
 function openNavbar() {
-    // Mobil menyuni ochish (CSS da left: 0 ga o'tkazadi)
     document.getElementById("navbar-responsive").style.left = "0";
 }
 
 function closeNavbar() {
-    // Mobil menyuni yopish (CSS da left: -100% ga o'tkazadi)
+    
     document.getElementById("navbar-responsive").style.left = "-100%";
 }
  
-// Tugmalarga event listener'lar biriktirish
+
 document.getElementById("navbar-open").addEventListener("click", openNavbar);
 document.getElementById("navbar-close").addEventListener("click", closeNavbar);
 
-// Navigatsiya linklarini bosganda ham menyuni yopish
+
 const navLinks = document.querySelectorAll('#navbar-responsive a[href^="#"]');
 navLinks.forEach(link => {
     link.addEventListener('click', closeNavbar);
 });
 
 
-// Navbarni skroll qilganda kichraytirish (shrink)
 let navbar = document.getElementById("navbar");
 function shrink() {
-    // scrollY o'rniga window.scrollY ishlatish tavsiya etiladi
-    if (window.scrollY > 80) { // O'lcham 100 dan 80 ga o'zgartirildi, chunki header balandligi 80px atrofida
+    
+    if (window.scrollY > 80) { 
         navbar.classList.add("navbar-shrink");
     } else {
         navbar.classList.remove("navbar-shrink");
@@ -31,21 +29,81 @@ function shrink() {
 }
 
 
-// Back to Top tugmasini ko'rsatish/yashirish
+
 let backtop = document.getElementById("backtop");
 function toggleBacktop() {
     if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
-      backtop.style.bottom = "20px"; // Kichikroq qiymat berildi
+      backtop.style.bottom = "20px"; 
     } else {
       backtop.style.bottom = "-80px";
     }
 }
  
-// Barcha scroll event'larini bitta joyga birlashtirish
+
 window.addEventListener("scroll", function () {
     shrink();
     toggleBacktop();
 });
 
-// sahifa yuklanganda shrink funksiyasini bir marta chaqirish
 document.addEventListener("DOMContentLoaded", shrink);
+
+
+
+
+
+
+
+const counterElements = document.querySelectorAll('.counter');
+const aboutSection = document.getElementById('about');
+let hasCounted = false;
+
+function formatNumber(num, format) {
+    if (format === 'K') {
+        return (num / 1000).toFixed(1).replace('.0', '') + 'K';
+    }
+    if (format === '+') {
+        return num + '+';
+    }
+    return num.toLocaleString('en-US');
+}
+
+function startCounter() {
+    if (!aboutSection || hasCounted) {
+        return;
+    }
+
+    const rect = aboutSection.getBoundingClientRect();
+    const isVisible = rect.top < (window.innerHeight - 100);
+
+    if (isVisible) {
+        hasCounted = true; 
+        
+        counterElements.forEach(element => {
+            const target = parseInt(element.getAttribute('data-target'));
+            const format = element.getAttribute('data-format');
+            const duration = 2000;
+            const startTime = performance.now();
+
+            const updateCount = (currentTime) => {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                const currentCount = Math.floor(progress * target);
+                
+                element.textContent = formatNumber(currentCount, format);
+
+                if (progress < 1) {
+                    requestAnimationFrame(updateCount);
+                } else {
+                    element.textContent = formatNumber(target, format);
+                }
+            };
+
+            requestAnimationFrame(updateCount);
+        });
+        
+        window.removeEventListener('scroll', startCounter);
+    }
+}
+
+window.addEventListener('scroll', startCounter);
+window.addEventListener('load', startCounter);
